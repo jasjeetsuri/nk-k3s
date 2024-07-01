@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frigate
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frigate
+  namespace: frigate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frigate
+  template:
+    metadata:
+      labels:
+        app: frigate
+    spec:
+      containers:
+        - name: frigate
+          image: ghcr.io/blakeblackshear/frigate:stable
+          resources:
+            limits:
+              kkohtaka.org/edgetpu: 1
+          ports:
+            - containerPort: 5000
+              name: webui
+            - containerPort: 8080
+              name: web
+            - containerPort: 1984
+              name: go2rtc
+            - containerPort: 8554
+              name: rtsp-feeds
+            - containerPort: 8555
+              name: webrtc-tcp
+              protocol: TCP
+            - containerPort: 8555
+              name: webrtc-udp
+              protocol: UDP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: config
+            - mountPath: /media/frigate
+              name: media-volume
+              subPath: media
+            - mountPath: /dev/shm
+              name: dshm
+            - name: vaapi
+              mountPath: /dev/dri
+              readOnly: true
+ #           - mountPath: /dev/bus/usb
+ #             name: dev-usb
+          securityContext:
+            privileged: true
+          env:
+            - name: FRIGATE_RTSP_PASSWORD
+              value: "password"  # replace with your RTSP password
+      volumes:
+        - name: config-volume
+          iscsi:
+            targetPortal: 192.168.0.2
+            iqn: iqn.2004-04.com.qnap:ts-219p:iscsi.frigate.8d257e
+            lun: 0
+            readOnly: false
+            chapAuthSession: false
+            fsType: ext4
+        - name: media-volume
+          persistentVolumeClaim:
+            claimName: frigate-media-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 100Mi
+        - name: vaapi
+          hostPath:
+            path: /dev/dri
+
