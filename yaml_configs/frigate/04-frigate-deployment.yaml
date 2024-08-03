@@ -4,7 +4,7 @@ metadata:
   name: frigate
   namespace: frigate
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: frigate
@@ -55,13 +55,8 @@ spec:
               value: "password"  # replace with your RTSP password
       volumes:
         - name: config-volume
-          iscsi:
-            targetPortal: 192.168.0.2
-            iqn: iqn.2004-04.com.qnap:ts-219p:iscsi.frigate.8d257e
-            lun: 0
-            readOnly: false
-            chapAuthSession: false
-            fsType: ext4
+          persistentVolumeClaim:
+            claimName: frigate-config-pvc
         - name: media-volume
           persistentVolumeClaim:
             claimName: frigate-media-pvc

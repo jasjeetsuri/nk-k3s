@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: frigate-config-pv
+  namespace: frigate
+spec:
+  capacity:
+    storage: 10Gi  # Adjust the storage size as needed
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /volume1/k3s/projects/frigate  # Static path on the NFS server
+    server: 192.168.0.2               # Your NFS server's IP
+  persistentVolumeReclaimPolicy: Retain
