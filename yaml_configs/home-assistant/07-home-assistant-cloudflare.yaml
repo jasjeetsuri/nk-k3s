@@ -1,0 +1,49 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: cloudflare-token
+  namespace: home-assistant
+spec:
+  encryptedData:
+    token: tokenToBeReplaced
+  template:
+    metadata:
+      creationTimestamp: null
+      name: cloudflare-token
+      namespace: home-assistant
+    type: Opaque
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflare
+  namespace: home-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudflare
+  template:
+    metadata:
+      labels:
+        app: cloudflare
+        name: cloudflare
+    spec:
+      containers:
+        - name: cloudflare
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: Always
+          args:
+            - "tunnel"
+            - "--no-autoupdate"
+            - "run"
+            - "--token"
+            - "$(CLOUDFLARE_TOKEN)"  # Use environment variable
+          env:
+            - name: CLOUDFLARE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-token  # Name of the decrypted Secret
+                  key: token  # Key containing the token

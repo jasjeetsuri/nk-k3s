@@ -10,7 +10,7 @@ metadata:
     app: home-assistant
 spec:
   rules:
-  - host: nk.jsuri.com
+  - host: ha.jsuri.com
     http:
       paths:
       - pathType: Prefix
@@ -22,5 +22,5 @@ spec:
               number: 8123
   tls:
   - hosts:
-    - nk.jsuri.com # Change by your domain
-    secretName: nk-jsuri-com-tls
+    - ha.jsuri.com # Change by your domain
+    secretName: ha-jsuri-com-tls

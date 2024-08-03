@@ -16,14 +16,17 @@ uninstall_k3s() {
 }
 
 install_dependancies() {
-
   apt update
-  apt install curl sudo -y
+  apt install curl gnupg wget sudo jq nfs-common git open-iscsi intel-media-va-driver bash-completion -y
+  # Source bash completion
+  . /etc/bash_completion
   echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
   curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
   apt update
-  apt install libedgetpu1-std gnupg  wget sudo jq nfs-common git open-iscsi intel-media-va-driver -y
+  # install coral tpu driver
+  apt install libedgetpu1-std -y
 }
+
 
 install_k3s() {
   if ! command -v k3s &> /dev/null; then
@@ -34,6 +37,12 @@ install_k3s() {
   else
     echo "K3s is already installed."
   fi
+}
+
+install_helm() {
+  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+  chmod 700 get_helm.sh
+  ./get_helm.sh
 }
 
 install_kubeseal() {
@@ -54,16 +63,57 @@ install_kubeseal() {
     curl -L -o  /var/lib/rancher/k3s/server/manifests/kubeseal-controller.yaml "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/controller.yaml"
 
     # Delete existing secret
-    kubectl get secrets -n kube-system -o name | grep '^secret/sealed-secrets' | awk -F'/' '{print $2}' | xargs -I {} kubectl delete secret {} -n kube-system
-    echo "kubeseal installed successfully."
+    # kubectl get secrets -n kube-system -o name | grep '^secret/sealed-secrets' | awk -F'/' '{print $2}' | xargs -I {} kubectl delete secret {} -n kube-system
+    # echo "kubeseal installed successfully."
   else
     echo "kubeseal is already installed."
   fi
 }
 
+
+create_kubectl_alias() {
+  # Define the alias
+  ALIAS_STRING="alias k='kubectl'"
+
+  # Define the kubectl completion command for bash
+  COMPLETION_STRING="complete -o default -F __start_kubectl k"
+
+  # Add autocomplete permanently to your bash shell.
+  ADD_PERMANENT_STRING="source <(kubectl completion bash)"
+
+  # Add the alias to .bashrc if it doesn't already exist
+  if ! grep -q "$ALIAS_STRING" ~/.bashrc; then
+      echo "Adding kubectl alias 'k' to ~/.bashrc"
+      echo "$ALIAS_STRING" >> ~/.bashrc
+  else
+      echo "Alias 'k' for kubectl already exists in ~/.bashrc"
+  fi
+
+  # Add the completion to .bashrc if it doesn't already exist
+  if ! grep -q "$COMPLETION_STRING" ~/.bashrc; then
+      echo "Adding kubectl auto-completion command for 'k' to ~/.bashrc"
+      echo "$COMPLETION_STRING" >> ~/.bashrc
+  else
+      echo "Kubectl auto-completion command for 'k' already exists in ~/.bashrc"
+  fi
+
+  # Add autocomplete permanently to .bashrc if it doesn't already exist
+  if ! grep -q "$ADD_PERMANENT_STRING" ~/.bashrc; then
+      echo "Adding kubectl auto-completion for 'k' to ~/.bashrc"
+      echo "$ADD_PERMANENT_STRING" >> ~/.bashrc
+  else
+      echo "Kubectl auto-completion for 'k' already exists in ~/.bashrc"
+  fi
+
+  # Apply changes to the current shell session
+  source ~/.bashrc
+  echo "Alias and auto-completion setup completed."
+}
+
+
 apply_secrets() {
   NFS_SERVER="192.168.0.2"
-  NFS_SHARE="/k3s"
+  NFS_SHARE="volume1/k3s"
   MOUNT_POINT="/mnt/nas"
   LOCAL_SECRETS_DIR="/mnt/nas/projects/secrets"
   SECRET_FILE="sealed-secrets-priv-key-backup.yaml"
@@ -113,6 +163,13 @@ clone_repo() {
   fi
 }
 
+install_multus() {
+  helm repo add rke2-charts https://rke2-charts.rancher.io
+  helm repo update
+  helm install multus rke2-charts/rke2-multus -n kube-system --kubeconfig /etc/rancher/k3s/k3s.yaml --values /var/lib/rancher/k3s/server/manifests/homelab/yaml_configs/multus/multus-values.yaml
+}
+
+
 # Main execution
 echo "Starting setup..."
 
@@ -125,13 +182,23 @@ install_dependancies
 # Install K3s if not already installed
 install_k3s
 
+# Set alias k for kubectl cmd
+create_kubectl_alias
+
 # Install kubeseal if not already installed
 install_kubeseal
 
 # Apply secrets
-apply_secrets
+# apply_secrets
+
+#Install helm
+install_helm
 
 # Clone or pull the repository
 clone_repo
 
+#Install multus
+install_multus
+
 echo "Setup, repository, update, completed."
+echo "Please run 'source ~/.bashrc' to apply changes in the current session."
