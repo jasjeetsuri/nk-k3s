@@ -6,7 +6,7 @@ metadata:
   name: cf-core
   namespace: compreface
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: core

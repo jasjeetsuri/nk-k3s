@@ -6,7 +6,7 @@ metadata:
   name: cf-admin
   namespace: compreface
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: admin
