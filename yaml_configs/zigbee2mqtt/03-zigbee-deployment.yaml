@@ -19,7 +19,7 @@ spec:
             "name": "multus-iot",
             "namespace": "default",
             "mac": "70:cb:57:bb:d4:a2",
-            "ips": ["192.168.0.11/24"]
+            "ips": ["192.168.0.15/24"]
           }]
     spec:
       containers:
@@ -36,8 +36,8 @@ spec:
           value: "true"
         - name: "ZIGBEE2MQTT_CONFIG_SERIAL_PORT"
           value: "/dev/ttyUSB0"
-        - name: "ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY"
-          value: "GENERATE"
+        #- name: "ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY"
+        #  value: "GENERATE"
         - name: ZIGBEE2MQTT_CONFIG_MQTT_USER
           value: "nick"
         - name: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD

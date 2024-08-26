@@ -107,8 +107,10 @@ create_kubectl_alias() {
 
   # Apply changes to the current shell session
   source ~/.bashrc
+  source /etc/bash_completion
   echo "Alias and auto-completion setup completed."
 }
+
 
 
 apply_secrets() {
