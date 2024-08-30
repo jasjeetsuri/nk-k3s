@@ -1,21 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: zigbee-private
-  namespace: zigbee
+  name: wisenet-wave-private
+  namespace: wisenet-wave
   annotations:
     kubernetes.io/ingress.class: traefik
   labels:
-    app: zigbee
+    app: wisenet-wave
 spec:
   rules:
-  - host: zigbee.kalsi.com
+  - host: wave.kalsi.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: zigbee
+            name: wisenet-wave
             port:
-              number: 8085
+              number: 7001
