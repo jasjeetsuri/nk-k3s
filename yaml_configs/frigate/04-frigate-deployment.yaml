@@ -16,9 +16,6 @@ spec:
       containers:
         - name: frigate
           image: ghcr.io/blakeblackshear/frigate:stable
-          resources:
-            limits:
-              kkohtaka.org/edgetpu: 1
           ports:
             - containerPort: 5000
               name: webui

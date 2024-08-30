@@ -14,6 +14,14 @@ spec:
     metadata:
       labels:
         app: wisenet-wave
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "multus-iot",
+            "namespace": "default",
+            "mac": "c6:bc:48:cc:e0:cd",
+            "ips": ["192.168.0.17/24"]
+          }]
     spec:
       containers:
         - env:
@@ -24,10 +32,10 @@ spec:
           - containerPort: 7001
           name: wisenet-wave
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /opt/hanwha/mediaserver/etc
               name: wisenet-wave-config
               subPath: config
-            - mountPath: /archive
+            - mountPath: /opt/hanwha/mediaserver/var
               name: wisenet-wave-archive
               subPath: archive
       volumes:
