@@ -6,7 +6,7 @@ metadata:
   name: cf-db
   namespace: compreface
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: db
