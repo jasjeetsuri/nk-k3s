@@ -9,7 +9,7 @@ metadata:
     app: grafana
 spec:
   rules:
-  - host: grafana.nkalsi.com
+  - host: grafana.jsuri.com
     http:
       paths:
       - pathType: Prefix

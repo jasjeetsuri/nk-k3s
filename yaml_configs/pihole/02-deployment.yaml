@@ -7,7 +7,7 @@ metadata:
   labels:
     app: pihole
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: pihole
@@ -29,24 +29,15 @@ spec:
         image: pihole/pihole:latest
         ports:
         - containerPort: 80
-        - containerPort: 53
+        #- containerPort: 53
         env:
         - name: TZ
           value: "Europe/London"  # Set your timezone
         - name: WEBPASSWORD
           value: "password"       # Set the password for Pi-hole Web UI
-        volumeMounts:
-        - name: pihole-storage
-          mountPath: /etc/pihole
-        - name: dnsmasq-storage
-          mountPath: /etc/dnsmasq.d
-      volumes:
-      - name: pihole-storage
-        persistentVolumeClaim:
-          claimName: pihole-pvc
-      - name: dnsmasq-storage
-        persistentVolumeClaim:
-          claimName: pihole-pvc
+        - name: IPV4_ADDRESS
+          value: "192.168.0.30"
+
 ---
 apiVersion: v1
 kind: Service
@@ -58,15 +49,15 @@ spec:
     app: pihole
   ports:
   - protocol: TCP
-    port: 80
+    port: 6700
     targetPort: 80
-    name: http
-  - protocol: UDP
-    port: 53
-    targetPort: 53
-    name: dns-udp
-  - protocol: TCP
-    port: 53
-    targetPort: 53
-    name: dns-tcp
-  type: NodePort
+ #   name: http
+ # - protocol: UDP
+ #   port: 53
+ #   targetPort: 53
+ #   name: dns-udp
+ # - protocol: TCP
+ #   port: 53
+ #   targetPort: 53
+ #   name: dns-tcp
+  type: LoadBalancer

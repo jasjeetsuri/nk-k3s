@@ -9,7 +9,7 @@ metadata:
     app: zigbee
 spec:
   rules:
-  - host: zigbee.nkalsi.com
+  - host: zigbee.kalsi.com
     http:
       paths:
       - pathType: Prefix

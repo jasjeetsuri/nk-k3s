@@ -9,7 +9,7 @@ metadata:
     app: restic
 spec:
   rules:
-  - host: backup.nkalsi.com
+  - host: backup.jsuri.com
     http:
       paths:
       - pathType: Prefix

@@ -12,7 +12,7 @@ spec:
       creationTimestamp: null
       name: cloudflare-token
       namespace: home-assistant
-      
+
 ---
 apiVersion: apps/v1
 kind: Deployment
