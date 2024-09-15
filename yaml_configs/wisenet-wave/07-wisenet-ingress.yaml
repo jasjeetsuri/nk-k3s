@@ -9,7 +9,7 @@ metadata:
     app: wisenet-wave
 spec:
   rules:
-  - host: wave.kalsi.com
+  - host: wave.nkalsi.com
     http:
       paths:
       - pathType: Prefix

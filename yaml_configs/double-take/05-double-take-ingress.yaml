@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
 spec:
   rules:
-    - host: dt.kalsi.com  # Replace with your domain
+    - host: dt.nkalsi.com  # Replace with your domain
       http:
         paths:
           - path: /

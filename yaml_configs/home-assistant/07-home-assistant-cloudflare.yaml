@@ -6,14 +6,13 @@ metadata:
   namespace: home-assistant
 spec:
   encryptedData:
-    token: tokenToBeReplaced
+    token: AgA8Oe1kR1bgtQHEOP1O7hTJgpMaxZr28/h3vxyyUfIFHh09gUGVGnkcjetK9uiPFqyHbjiLfzpRvAGhyTmIvC3H27aok2F9GSsNUqH6DQz3azkZyAN7+bvespL8B0vUkPkyFCop3cnpYFAvLKO5FQB4U5b6AqMw3c2Z5oMuHRwaO/bAJkl4OnKOWPEnT4IBAv8t0u5JPApv2OjmxEeYOyWQwcZp3XZIS9LeX5fzB3araxvAk5ZsifJaJWAmKA7FUzVruXpz+kODGO6Gxfd85KN/ppOiAnH4Ql08FNRVGnzp/EY5m6ncmtK5HcvGydJoMji253CdblaH015BU1AzF3km+cAk7Zpj0OgB8YRb0Uj4mC0U5HwJv+up6bq064yB64RWoaZ+J5SBYERx9l6nxc4GavZIw5BdwjSgRrTE+zv7CMYk3mnSWQfjxPD8LAq/zVtdRjsXRHMYwrXQEBXnzkqAUmQPpahNQ5SK+ZC7upO2CSphnQkj9Axqbe5nRn6Ty6mnr9x6+4RjH9TthN0NomhHFykxNDLlKUmYXJCU0KkfrTZwWNbGyGTky7NAGXY2iPpO0g1n+cODaCnMMxhwYv9FOdrRI7WT/4+Wa9fXC6w3X3ouEWPZ5aMcpofN+9fvuhMyItp+278zBNPni3pKGk8Y/6XSVuhvapHsG3SPMLh/JwRYN1SDYrKt/45ZvqW+dWcek7y1KIw+ir+p40pF038L7hUd1V9vZRz2IUkmMw7mDrn8GsxXVZt21wSPLJwE85orvKvXOaY0J38GZRUtnpQ4i5tTiHyyD4q7rB/eOySEbaU0qT0HbkoDsrinv3Ax0SQxb7SXE4vwPup3q5XjUF/Aw12oHEWPgV6RRB4jP7j//hZbHTKdz+SnXWB8H0SqumSwA6UWvqTtcM7WqfpsdFG2E3RDWKVGUMfH4UdElIOYyTubEhKNZ5MO
   template:
     metadata:
       creationTimestamp: null
       name: cloudflare-token
       namespace: home-assistant
-    type: Opaque
-
+      
 ---
 apiVersion: apps/v1
 kind: Deployment

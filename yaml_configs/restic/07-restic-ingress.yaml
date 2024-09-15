@@ -1,21 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homeassistant-ingress
-  namespace: home-assistant
+  name: restic
+  namespace: restic
   annotations:
     kubernetes.io/ingress.class: traefik
   labels:
-    app: home-assistant
+    app: restic
 spec:
   rules:
-  - host: nk.jsuri.com
+  - host: backup.nkalsi.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: homeassistant-service
+            name: restic
             port:
-              number: 8123
+              number: 9898
