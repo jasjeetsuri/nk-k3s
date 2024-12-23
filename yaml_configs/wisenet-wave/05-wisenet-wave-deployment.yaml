@@ -14,14 +14,6 @@ spec:
     metadata:
       labels:
         app: wisenet-wave
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name": "multus-iot",
-            "namespace": "default",
-            "mac": "c6:bc:48:cc:e0:cd",
-            "ips": ["192.168.0.17/24"]
-          }]
     spec:
       containers:
         - env:
